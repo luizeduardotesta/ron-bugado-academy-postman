@@ -1,0 +1,435 @@
+{
+	"id": "00a781c4-9057-46b7-8b54-a6a4311c1a0a",
+	"values": [
+		{
+			"key": "mailAdmin",
+			"value": "sysadmin@qacoders.com",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "passwordAdmin",
+			"value": "1234@Test",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "Token",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "MsgChangedPassword",
+			"value": "Senha atualizada com sucesso!",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgChangedPasswordAlreadyUsed",
+			"value": "Essa senha já foi utilizada anteriormente. Por favor, escolha uma nova senha.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgDeleteWithoutPermission",
+			"value": "No token provided.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgDeleteAdmin",
+			"value": "Admin deletado com sucesso!.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgDeleteUnexistentUserId",
+			"value": "Esse usuário não existe em nossa base de dados.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgCorporateNameIsRequired",
+			"value": "O campo 'Nome da empresa' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgMatrizIsAlphanumeric",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgMailIsRequired",
+			"value": "O campo 'Email' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgWrongMailFormat",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgRegisterCompanyIsRequired",
+			"value": "O campo 'CNPJ' da empresa é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgMatrizIsRequired",
+			"value": "O campo 'Razão Social' da empresa é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgResponsibleContactIsRequired",
+			"value": "O campo 'Contado do Responsável' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgResponsibleContactHaveOnlyLetters",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgTelephoneIsRequired",
+			"value": "O campo 'Telefone' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgServiceDescriptionIsRequired",
+			"value": "O campo 'Descrição' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgZipCodeIsRequired",
+			"value": "O campo 'CEP' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgCountryIsRequired",
+			"value": "O campo País é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgCityIsRequired",
+			"value": "O campo 'cidade' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgStateIsRequired",
+			"value": "O campo 'estado' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgDistrictIsRequired",
+			"value": "O campo 'bairro' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgStreetIsRequired",
+			"value": "O campo 'logradouro' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgNumberIsRequired",
+			"value": "O campo 'número' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgDuplicateCorporateName",
+			"value": "Essa companhia já está cadastrada. Verifique o nome, CNPJ e a razão social da companhia.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMaxCharactersCorporateName",
+			"value": "O campo 'Nome da empresa' deve ter no máximo 100 caracteres.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGNumericCNPJ",
+			"value": "O campo 'CNPJ' da empresa deve conter apenas números.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMaxDigitsCNPJ",
+			"value": "O campo 'CNPJ' da empresa deve ter no máximo 14 caracteres numéricos.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMaxCharactersMatriz",
+			"value": "O campo 'Razão Social' da empresa deve ter no máximo 100 caracteres.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMaxCharactersResponsibleContact",
+			"value": "O campo 'Contado do Responsável' deve ter no máximo 100 caracteres.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGNumericTelephone",
+			"value": "O campo 'Telefone' deve conter somente números.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGNumericZipCode",
+			"value": "O campo 'CEP' só pode conter números",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGLetersCity",
+			"value": "O campo 'cidade' só pode conter letras e os caracteres especiais 'ª', 'º', '‘' e '-'.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGLetersState",
+			"value": "O campo 'estado' só pode conter letras maiúsculas",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGNoToken",
+			"value": "No token provided.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMalformedIDCompany",
+			"value": "CastError: Cast to ObjectId failed for value \"9999999999999999999999\" (type string) at path \"_id\" for model \"Company\"",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGInvalidCompanyID",
+			"value": "Essa companhia não existe em nosso sistema.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGCompanyDeleted",
+			"value": "Companhia deletado com sucesso.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGNotFoundCompany",
+			"value": "Essa companhia não existem em nossa base de dados.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGEditBoard",
+			"value": "Cadastro atualizado com sucesso!",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgDuplicateBoardName",
+			"value": "Não é possível salvar esse registro. Diretoria já cadastrada no sistema.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGBoardIsRequired",
+			"value": "O campo 'diretoria' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgBoardNamePermitedCharacters",
+			"value": "O campo 'diretoria' só pode conter letras e o caractere especial '&'.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMaxCharactersBoardName",
+			"value": "O campo 'diretoria' deve possuir no máximo 50 caracteres.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMalformedIDBoard",
+			"value": "CastError: Cast to ObjectId failed for value \"9999999999999999999999\" (type string) at path \"_id\" for model \"Board\"",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGCostCenterIsRequired",
+			"value": "O campo 'centro de custos' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGBoardIDIsRequired",
+			"value": "O campo 'ID da diretoria' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgCostCenterNamePermitedCharacters",
+			"value": "O campo 'centro de custos' só pode conter letras e o caractere especial '&'.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgCostCenterNamemaxCharacters",
+			"value": "O campo 'centro de custos' deve possuir no máximo 50 caracteres.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMalformedIDCostCenter",
+			"value": "CastError: Cast to ObjectId failed for value \"9999999999999999999999\" (type string) at path \"_id\" for model \"CostCenter\"",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGSuccessEdit",
+			"value": "Cadastro atualizado com sucesso!",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGCostCenterStatusMainteinFalse",
+			"value": "Esse centro de custo já se encontra inativado.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGCostCenterStatusMainteinTrue",
+			"value": "Esse centro de custo já se encontra ativado.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGnewRegister",
+			"value": "Cadastro realizado com sucesso.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGdeparmentNameIsRequired",
+			"value": "O campo 'diretoria' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGcostCenterIDIsRequired",
+			"value": "O campo 'ID do centro de custos' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgdeparmentNamePermitedCharacters",
+			"value": "O campo 'diretoria' só pode conter letras e o caractere especial '&'.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgdeparmentNameMaxCharacters",
+			"value": "O campo 'diretoria' deve possuir no máximo 50 caracteres.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGduplicateDepartment",
+			"value": "Não é possível salvar esse registro. Departamento já cadastrado no sistema.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGMalformedIDdepartment",
+			"value": "CastError: Cast to ObjectId failed for value \"9999999999999999999999\" (type string) at path \"_id\" for model \"Department\"",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGdepartmentIsRequired",
+			"value": "O campo 'departamento' é obrigatório.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGdepartmentStatusMainteinFalse",
+			"value": "Esse departamento já se encontra inativado.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MSGdepartmentStatusMainteinTrue",
+			"value": "Esse departamento já se encontra ativado.",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "costCenterStatus",
+			"value": "Centro de custos inativado com sucesso!",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "departmentStatus",
+			"value": "Departamento inativado com sucesso!",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "MsgChangedStatus",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "MsgUserUpdated",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "MsgDeleteUserId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "MSGMaxCharactersAdress",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "MSGMalformedID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2024-02-01T19:16:51.828Z",
+	"_postman_exported_using": "Postman/10.22.9"
+}

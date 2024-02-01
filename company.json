@@ -1,0 +1,2696 @@
+{
+	"info": {
+		"_postman_id": "c3023c77-ae88-4826-b246-1ff0b178c591",
+		"name": "03.Company",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26876722"
+	},
+	"item": [
+		{
+			"name": "Happy ending",
+			"item": [
+				{
+					"name": "Register company",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function corporateName(){",
+									"",
+									"    var corporateName = [",
+									"  \"Apple Inc.\", \"Microsoft Corporation\", \"Amazon.com Inc.\", \"Alphabet Inc.\",",
+									"  \"Facebook, Inc.\", \"Tesla, Inc.\", \"Walmart Inc.\", \"Johnson & Johnson\",",
+									"  \"JPMorgan Chase & Co.\", \"Berkshire Hathaway Inc.\", \"Visa Inc.\", \"Procter & Gamble Co.\",",
+									"  \"Intel Corporation\", \"Verizon Communications Inc.\", \"AT&T Inc.\", \"Cisco Systems, Inc.\",",
+									"  \"Netflix, Inc.\", \"The Coca-Cola Company\", \"Walt Disney Company\", \"Mastercard Incorporated\",",
+									"  \"Adobe Inc.\", \"Salesforce.com, Inc.\", \"IBM\", \"McDonald's Corporation\",",
+									"  \"PayPal Holdings, Inc.\", \"General Electric Company\", \"Nike, Inc.\", \"Oracle Corporation\",",
+									"  \"Accenture plc\", \"Target Corporation\", \"Exxon Mobil Corporation\", \"Boeing Co.\",",
+									"  \"General Motors Company\", \"Ford Motor Company\", \"Pfizer Inc.\", \"Caterpillar Inc.\",",
+									"  \"3M Company\", \"Honeywell International Inc.\", \"Abbott Laboratories\",",
+									"  \"Raytheon Technologies Corporation\", \"DuPont de Nemours, Inc.\", \"Lockheed Martin Corporation\",",
+									"  \"The Home Depot, Inc.\", \"Goldman Sachs Group, Inc.\", \"Morgan Stanley\", \"American Express Company\"",
+									"];",
+									"",
+									"var randomItem = corporateName[Math.floor(Math.random() * corporateName.length)];",
+									"",
+									"return randomItem;",
+									"}",
+									"",
+									"var randomCompany = corporateName();",
+									"pm.environment.set(\"CorporateName\", randomCompany);",
+									"pm.environment.set(\"Matriz\", randomCompany);",
+									"",
+									"function gera_random(n) {",
+									"  var ranNum = Math.round(Math.random() * n);",
+									"  return ranNum;",
+									"}",
+									"",
+									"function mod(dividendo, divisor) {",
+									"  return Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);",
+									"}",
+									"",
+									"function generateCNPJ() {",
+									"  var n = 9;",
+									"  var n1 = gera_random(n);",
+									"  var n2 = gera_random(n);",
+									"  var n3 = gera_random(n);",
+									"  var n4 = gera_random(n);",
+									"  var n5 = gera_random(n);",
+									"  var n6 = gera_random(n);",
+									"  var n7 = gera_random(n);",
+									"  var n8 = gera_random(n);",
+									"  var n9 = 0;",
+									"  var n10 = 0;",
+									"  var n11 = 0;",
+									"  var n12 = 1;",
+									"  var d1 = n12 * 2 + n11 * 3 + n10 * 4 + n9 * 5 + n8 * 6 + n7 * 7 + n6 * 8 + n5 * 9 + n4 * 2 + n3 * 3 + n2 * 4 + n1 * 5;",
+									"  d1 = 11 - mod(d1, 11);",
+									"  if (d1 >= 10) d1 = 0;",
+									"  var d2 = d1 * 2 + n12 * 3 + n11 * 4 + n10 * 5 + n9 * 6 + n8 * 7 + n7 * 8 + n6 * 9 + n5 * 2 + n4 * 3 + n3 * 4 + n2 * 5 + n1 * 6;",
+									"  d2 = 11 - mod(d2, 11);",
+									"  if (d2 >= 10) d2 = 0;",
+									"  var resultado = '' + n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + d1 + d2;",
+									"  return resultado;",
+									"}",
+									"",
+									"pm.environment.set(\"CNPJCompany\", generateCNPJ());",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function(){",
+									"    pm.response.to.have.status(201)",
+									"});",
+									"",
+									"pm.test(\"Verify the corporateName\", function(){",
+									"    pm.expect(pm.environment.get(\"CorporateName\")).to.eql(JSON.parse(responseBody).newCompany.corporateName)",
+									"});",
+									"",
+									"pm.test(\"Verify the registerCompany\", function(){",
+									"    pm.expect(pm.environment.get(\"CNPJCompany\")).to.eql(JSON.parse(responseBody).newCompany.registerCompany)",
+									"});",
+									"",
+									"pm.test(\"Verify the matriz\", function(){",
+									"    pm.expect(pm.environment.get(\"Matriz\")).to.eql(JSON.parse(responseBody).newCompany.matriz)",
+									"});",
+									"",
+									"var cnpjToTest = pm.environment.get(\"CNPJCompany\");",
+									"",
+									"pm.test(\"Verify if the CNPJ is valid\", function() {",
+									"    function validaCNPJ(cnpj) {",
+									"        var b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];",
+									"        var c = String(cnpj).replace(/[^\\d]/g, '');",
+									"",
+									"        if (c.length !== 14 || /0{14}/.test(c)) {",
+									"            return false;",
+									"        }",
+									"",
+									"        var n = 0;",
+									"        for (var i = 0; i < 12; i++) {",
+									"            n += parseInt(c[i]) * b[i + 1];",
+									"        }",
+									"        if (c[12] != (((n %= 11) < 2) ? 0 : 11 - n)) {",
+									"            return false;",
+									"        }",
+									"",
+									"        n = 0;",
+									"        for (var i = 0; i <= 12; i++) {",
+									"            n += parseInt(c[i]) * b[i];",
+									"        }",
+									"        if (c[13] != (((n %= 11) < 2) ? 0 : 11 - n)) {",
+									"            return false;",
+									"        }",
+									"",
+									"        return true;",
+									"    }",
+									"",
+									"    pm.expect(validaCNPJ(cnpjToTest)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if the phone number is Brazilian\", function() {",
+									"    var phoneNumber = pm.environment.get(\"PhoneNumber\");",
+									"",
+									"    var brazilianPhoneRegex = /^55\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}$/;",
+									"",
+									"    pm.expect(brazilianPhoneRegex.test(phoneNumber)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Verify the zipCode\", function(){",
+									"    pm.expect(pm.environment.get(\"ZipCode\")).to.eql(JSON.parse(responseBody).newCompany.address[0].zipCode)",
+									"});",
+									"",
+									"pm.environment.set(\"IdCompany\", JSON.parse(responseBody).newCompany._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"{{ZipCode}}\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/company"
+					},
+					"response": []
+				},
+				{
+					"name": "List all companies",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"check if ms is fast\", function(){",
+									"    pm.expect(responseTime).to.be.below(500);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/company"
+					},
+					"response": []
+				},
+				{
+					"name": "Count all companies",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Count all registered companies\", function(){",
+									"var responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.have.property(\"count\");",
+									"",
+									"    pm.expect(responseData.count).to.be.a('number');",
+									"    pm.expect(responseData.count).to.satisfy((count) => count > 0);",
+									"    pm.expect(responseData.count % 1).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"check if ms is fast\", function(){",
+									"    pm.expect(responseTime).to.be.below(500);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/company/count"
+					},
+					"response": []
+				},
+				{
+					"name": "List a company by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Check the company ID\", function(){",
+									"    pm.expect(pm.environment.get(\"IdCompany\")).to.eql(JSON.parse(responseBody)._id)",
+									"});",
+									"",
+									"pm.test(\"Check the company corporate name\", function(){",
+									"    pm.expect(pm.environment.get(\"CorporateName\")).to.eql(JSON.parse(responseBody).corporateName)",
+									"});",
+									"",
+									"pm.test(\"Check the company CNPJ\", function(){",
+									"    pm.expect(pm.environment.get(\"CNPJCompany\")).to.eql(JSON.parse(responseBody).registerCompany)",
+									"});",
+									"",
+									"pm.test(\"Check the company matriz\", function(){",
+									"    pm.expect(pm.environment.get(\"Matriz\")).to.eql(JSON.parse(responseBody).matriz)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit company by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Verify the corporateName\", function(){",
+									"    pm.expect(pm.environment.get(\"CorporateName\")).to.eql(JSON.parse(responseBody).updatedCompany.corporateName)",
+									"});",
+									"",
+									"pm.test(\"Verify the registerCompany\", function(){",
+									"    pm.expect(pm.environment.get(\"CNPJCompany\")).to.eql(JSON.parse(responseBody).updatedCompany.registerCompany)",
+									"});",
+									"",
+									"pm.test(\"Verify the matriz\", function(){",
+									"    pm.expect(pm.environment.get(\"Matriz\")).to.eql(JSON.parse(responseBody).updatedCompany.matriz)",
+									"});",
+									"",
+									"var cnpjToTest = pm.environment.get(\"CNPJCompany\");",
+									"",
+									"pm.test(\"Verify if the CNPJ is valid\", function() {",
+									"    function validaCNPJ(cnpj) {",
+									"        var b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];",
+									"        var c = String(cnpj).replace(/[^\\d]/g, '');",
+									"",
+									"        if (c.length !== 14 || /0{14}/.test(c)) {",
+									"            return false;",
+									"        }",
+									"",
+									"        var n = 0;",
+									"        for (var i = 0; i < 12; i++) {",
+									"            n += parseInt(c[i]) * b[i + 1];",
+									"        }",
+									"        if (c[12] != (((n %= 11) < 2) ? 0 : 11 - n)) {",
+									"            return false;",
+									"        }",
+									"",
+									"        n = 0;",
+									"        for (var i = 0; i <= 12; i++) {",
+									"            n += parseInt(c[i]) * b[i];",
+									"        }",
+									"        if (c[13] != (((n %= 11) < 2) ? 0 : 11 - n)) {",
+									"            return false;",
+									"        }",
+									"",
+									"        return true;",
+									"    }",
+									"",
+									"    pm.expect(validaCNPJ(cnpjToTest)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if the phone number is Brazilian\", function() {",
+									"    var phoneNumber = pm.environment.get(\"PhoneNumber\");",
+									"",
+									"    var brazilianPhoneRegex = /^55\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}$/;",
+									"",
+									"    pm.expect(brazilianPhoneRegex.test(phoneNumber)).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit company address",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"address\": [\n    {\n      \"zipCode\": \"{{ZipCode}}\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/company/address/{{IdCompany}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit company status",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/company/status/{{IdCompany}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete company by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Verify unauthorized message\", function(){",
+									"    pm.expect(pm.globals.get(\"MSGCompanyDeleted\")).to.eql(JSON.parse(responseBody).msg)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy ending",
+			"item": [
+				{
+					"name": "Register company",
+					"item": [
+						{
+							"name": "CorporateName",
+							"item": [
+								{
+									"name": "Alphanumeric corporateName",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify if the corporateName is alphanumeric\", function(){",
+													"    pm.expect(pm.globals.get(\"MsgCorporateNameIsRequired\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste@#&@#!@$#%¨&%?::??\",\n  \"registerCompany\": \"12126426000157\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste124\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								},
+								{
+									"name": "Duplicate corporateName",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify if the corporateName is duplicated\", function(){",
+													"    pm.expect(pm.globals.get(\"MsgDuplicateCorporateName\")).to.eql(JSON.parse(responseBody).alert[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"{{ZipCode}}\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								},
+								{
+									"name": "Max characters corporateName",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify corporateName Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MSGMaxCharactersCorporateName\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"{{LongFullName}}\",\n  \"registerCompany\": \"12126456000155\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "CNPJ",
+							"item": [
+								{
+									"name": "Numeric CNPJ",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify CNPJ Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MSGNumericCNPJ\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste$@\",\n  \"registerCompany\": \"a2126456000111\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste112\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								},
+								{
+									"name": "Duplicate CNPJ",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify CNPJ Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MsgDuplicateCorporateName\")).to.eql(JSON.parse(responseBody).alert[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste\",\n  \"registerCompany\": \"12126456000155\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								},
+								{
+									"name": "14 digits CNPJ",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify CNPJ Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MSGMaxDigitsCNPJ\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste\",\n  \"registerCompany\": \"121264560001551\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Matriz",
+							"item": [
+								{
+									"name": "Alphanumeric matriz",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify if matriz is alphanumeric\", function(){",
+													"    pm.expect(pm.globals.get(\"MsgMatrizIsAlphanumeric\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste@#&@#\",\n  \"registerCompany\": \"12126456001157\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste124Q@$#$@#\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								},
+								{
+									"name": "Duplicate matriz",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify matriz Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MsgDuplicateCorporateName\")).to.eql(JSON.parse(responseBody).alert[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste\",\n  \"registerCompany\": \"12126456000155\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								},
+								{
+									"name": "Max characters matriz",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify matriz Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MSGMaxCharactersMatriz\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste\",\n  \"registerCompany\": \"12126456000155\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{LongFullName}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "ResponsibleContact",
+							"item": [
+								{
+									"name": "Only Leters responsibleContact",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify ResponsibleContact have only letters\", function(){",
+													"    pm.expect(pm.globals.get(\"MsgResponsibleContactHaveOnlyLetters\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste@22#&@#\",\n  \"registerCompany\": \"12126456010157\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste12124\",\n  \"responsibleContact\": \"123!@#$%!#\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								},
+								{
+									"name": "Max characters responsibleContact",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify responsibleContact Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MSGMaxCharactersResponsibleContact\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste\",\n  \"registerCompany\": \"12126456000155\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste\",\n  \"responsibleContact\": \"{{LongFullName}}\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								},
+								{
+									"name": "Min two words responsibleContact",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify ResponsibleContact Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MsgMinWordsResponsibleContact\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste3\",\n  \"registerCompany\": \"12126456201157\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste3\",\n  \"responsibleContact\": \"M\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Telephone",
+							"item": [
+								{
+									"name": "Numeric telephone",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify telephone Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MSGNumericTelephone\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste$@\",\n  \"registerCompany\": \"21216456000111\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste112\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"a9999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Mail",
+							"item": [
+								{
+									"name": "Wrong mail format",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.test(\"Verify wrong mail format Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MsgWrongMailFormat\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Test3e2$@1\",\n  \"registerCompany\": \"21216216030111\",\n  \"mail\": \"test@test\",\n  \"matriz\": \"Teste1123422\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "address",
+							"item": [
+								{
+									"name": "zipCode",
+									"item": [
+										{
+											"name": "Numeric zipCode",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function(){",
+															"    pm.response.to.have.status(400)",
+															"});",
+															"",
+															"pm.test(\"Verify zipCode Message\", function(){",
+															"    pm.expect(pm.globals.get(\"MSGNumericZipCode\")).to.eql(JSON.parse(responseBody).error[0])",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"function corporateName(){",
+															"",
+															"    var corporateName = [",
+															"  \"Apple Inc.\", \"Microsoft Corporation\", \"Amazon.com Inc.\", \"Alphabet Inc.\",",
+															"  \"Facebook, Inc.\", \"Tesla, Inc.\", \"Walmart Inc.\", \"Johnson & Johnson\",",
+															"  \"JPMorgan Chase & Co.\", \"Berkshire Hathaway Inc.\", \"Visa Inc.\", \"Procter & Gamble Co.\",",
+															"  \"Intel Corporation\", \"Verizon Communications Inc.\", \"AT&T Inc.\", \"Cisco Systems, Inc.\",",
+															"  \"Netflix, Inc.\", \"The Coca-Cola Company\", \"Walt Disney Company\", \"Mastercard Incorporated\",",
+															"  \"Adobe Inc.\", \"Salesforce.com, Inc.\", \"IBM\", \"McDonald's Corporation\",",
+															"  \"PayPal Holdings, Inc.\", \"General Electric Company\", \"Nike, Inc.\", \"Oracle Corporation\",",
+															"  \"Accenture plc\", \"Target Corporation\", \"Exxon Mobil Corporation\", \"Boeing Co.\",",
+															"  \"General Motors Company\", \"Ford Motor Company\", \"Pfizer Inc.\", \"Caterpillar Inc.\",",
+															"  \"3M Company\", \"Honeywell International Inc.\", \"Abbott Laboratories\",",
+															"  \"Raytheon Technologies Corporation\", \"DuPont de Nemours, Inc.\", \"Lockheed Martin Corporation\",",
+															"  \"The Home Depot, Inc.\", \"Goldman Sachs Group, Inc.\", \"Morgan Stanley\", \"American Express Company\"",
+															"];",
+															"",
+															"var randomItem = corporateName[Math.floor(Math.random() * corporateName.length)];",
+															"",
+															"return randomItem;",
+															"}",
+															"",
+															"var randomCompany = corporateName();",
+															"pm.environment.set(\"CorporateName\", randomCompany);",
+															"pm.environment.set(\"Matriz\", randomCompany);",
+															"",
+															"function gera_random(n) {",
+															"  var ranNum = Math.round(Math.random() * n);",
+															"  return ranNum;",
+															"}",
+															"",
+															"function mod(dividendo, divisor) {",
+															"  return Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);",
+															"}",
+															"",
+															"function generateCNPJ() {",
+															"  var n = 9;",
+															"  var n1 = gera_random(n);",
+															"  var n2 = gera_random(n);",
+															"  var n3 = gera_random(n);",
+															"  var n4 = gera_random(n);",
+															"  var n5 = gera_random(n);",
+															"  var n6 = gera_random(n);",
+															"  var n7 = gera_random(n);",
+															"  var n8 = gera_random(n);",
+															"  var n9 = 0;",
+															"  var n10 = 0;",
+															"  var n11 = 0;",
+															"  var n12 = 1;",
+															"  var d1 = n12 * 2 + n11 * 3 + n10 * 4 + n9 * 5 + n8 * 6 + n7 * 7 + n6 * 8 + n5 * 9 + n4 * 2 + n3 * 3 + n2 * 4 + n1 * 5;",
+															"  d1 = 11 - mod(d1, 11);",
+															"  if (d1 >= 10) d1 = 0;",
+															"  var d2 = d1 * 2 + n12 * 3 + n11 * 4 + n10 * 5 + n9 * 6 + n8 * 7 + n7 * 8 + n6 * 9 + n5 * 2 + n4 * 3 + n3 * 4 + n2 * 5 + n1 * 6;",
+															"  d2 = 11 - mod(d2, 11);",
+															"  if (d2 >= 10) d2 = 0;",
+															"  var resultado = '' + n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + d1 + d2;",
+															"  return resultado;",
+															"}",
+															"",
+															"pm.environment.set(\"CNPJCompany\", generateCNPJ());",
+															"",
+															"",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": {
+														"value": "{{Token}}",
+														"key": "token",
+														"in": "query"
+													}
+												},
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"0477700a\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{baseUrl}}/api/company"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "city",
+									"item": [
+										{
+											"name": "Leters city",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function(){",
+															"    pm.response.to.have.status(400)",
+															"});",
+															"",
+															"pm.test(\"Verify city Message\", function(){",
+															"    pm.expect(pm.globals.get(\"MSGLetersCity\")).to.eql(JSON.parse(responseBody).error[0])",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"function corporateName(){",
+															"",
+															"    var corporateName = [",
+															"  \"Apple Inc.\", \"Microsoft Corporation\", \"Amazon.com Inc.\", \"Alphabet Inc.\",",
+															"  \"Facebook, Inc.\", \"Tesla, Inc.\", \"Walmart Inc.\", \"Johnson & Johnson\",",
+															"  \"JPMorgan Chase & Co.\", \"Berkshire Hathaway Inc.\", \"Visa Inc.\", \"Procter & Gamble Co.\",",
+															"  \"Intel Corporation\", \"Verizon Communications Inc.\", \"AT&T Inc.\", \"Cisco Systems, Inc.\",",
+															"  \"Netflix, Inc.\", \"The Coca-Cola Company\", \"Walt Disney Company\", \"Mastercard Incorporated\",",
+															"  \"Adobe Inc.\", \"Salesforce.com, Inc.\", \"IBM\", \"McDonald's Corporation\",",
+															"  \"PayPal Holdings, Inc.\", \"General Electric Company\", \"Nike, Inc.\", \"Oracle Corporation\",",
+															"  \"Accenture plc\", \"Target Corporation\", \"Exxon Mobil Corporation\", \"Boeing Co.\",",
+															"  \"General Motors Company\", \"Ford Motor Company\", \"Pfizer Inc.\", \"Caterpillar Inc.\",",
+															"  \"3M Company\", \"Honeywell International Inc.\", \"Abbott Laboratories\",",
+															"  \"Raytheon Technologies Corporation\", \"DuPont de Nemours, Inc.\", \"Lockheed Martin Corporation\",",
+															"  \"The Home Depot, Inc.\", \"Goldman Sachs Group, Inc.\", \"Morgan Stanley\", \"American Express Company\"",
+															"];",
+															"",
+															"var randomItem = corporateName[Math.floor(Math.random() * corporateName.length)];",
+															"",
+															"return randomItem;",
+															"}",
+															"",
+															"var randomCompany = corporateName();",
+															"pm.environment.set(\"CorporateName\", randomCompany);",
+															"pm.environment.set(\"Matriz\", randomCompany);",
+															"",
+															"function gera_random(n) {",
+															"  var ranNum = Math.round(Math.random() * n);",
+															"  return ranNum;",
+															"}",
+															"",
+															"function mod(dividendo, divisor) {",
+															"  return Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);",
+															"}",
+															"",
+															"function generateCNPJ() {",
+															"  var n = 9;",
+															"  var n1 = gera_random(n);",
+															"  var n2 = gera_random(n);",
+															"  var n3 = gera_random(n);",
+															"  var n4 = gera_random(n);",
+															"  var n5 = gera_random(n);",
+															"  var n6 = gera_random(n);",
+															"  var n7 = gera_random(n);",
+															"  var n8 = gera_random(n);",
+															"  var n9 = 0;",
+															"  var n10 = 0;",
+															"  var n11 = 0;",
+															"  var n12 = 1;",
+															"  var d1 = n12 * 2 + n11 * 3 + n10 * 4 + n9 * 5 + n8 * 6 + n7 * 7 + n6 * 8 + n5 * 9 + n4 * 2 + n3 * 3 + n2 * 4 + n1 * 5;",
+															"  d1 = 11 - mod(d1, 11);",
+															"  if (d1 >= 10) d1 = 0;",
+															"  var d2 = d1 * 2 + n12 * 3 + n11 * 4 + n10 * 5 + n9 * 6 + n8 * 7 + n7 * 8 + n6 * 9 + n5 * 2 + n4 * 3 + n3 * 4 + n2 * 5 + n1 * 6;",
+															"  d2 = 11 - mod(d2, 11);",
+															"  if (d2 >= 10) d2 = 0;",
+															"  var resultado = '' + n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + d1 + d2;",
+															"  return resultado;",
+															"}",
+															"",
+															"pm.environment.set(\"CNPJCompany\", generateCNPJ());",
+															"",
+															"",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": {
+														"value": "{{Token}}",
+														"key": "token",
+														"in": "query"
+													}
+												},
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São 1Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{baseUrl}}/api/company"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "state",
+									"item": [
+										{
+											"name": "Only leters state",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function(){",
+															"    pm.response.to.have.status(400)",
+															"});",
+															"",
+															"pm.test(\"Verify state Message\", function(){",
+															"    pm.expect(pm.globals.get(\"MSGLetersState\")).to.eql(JSON.parse(responseBody).error[0])",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"function corporateName(){",
+															"",
+															"    var corporateName = [",
+															"  \"Apple Inc.\", \"Microsoft Corporation\", \"Amazon.com Inc.\", \"Alphabet Inc.\",",
+															"  \"Facebook, Inc.\", \"Tesla, Inc.\", \"Walmart Inc.\", \"Johnson & Johnson\",",
+															"  \"JPMorgan Chase & Co.\", \"Berkshire Hathaway Inc.\", \"Visa Inc.\", \"Procter & Gamble Co.\",",
+															"  \"Intel Corporation\", \"Verizon Communications Inc.\", \"AT&T Inc.\", \"Cisco Systems, Inc.\",",
+															"  \"Netflix, Inc.\", \"The Coca-Cola Company\", \"Walt Disney Company\", \"Mastercard Incorporated\",",
+															"  \"Adobe Inc.\", \"Salesforce.com, Inc.\", \"IBM\", \"McDonald's Corporation\",",
+															"  \"PayPal Holdings, Inc.\", \"General Electric Company\", \"Nike, Inc.\", \"Oracle Corporation\",",
+															"  \"Accenture plc\", \"Target Corporation\", \"Exxon Mobil Corporation\", \"Boeing Co.\",",
+															"  \"General Motors Company\", \"Ford Motor Company\", \"Pfizer Inc.\", \"Caterpillar Inc.\",",
+															"  \"3M Company\", \"Honeywell International Inc.\", \"Abbott Laboratories\",",
+															"  \"Raytheon Technologies Corporation\", \"DuPont de Nemours, Inc.\", \"Lockheed Martin Corporation\",",
+															"  \"The Home Depot, Inc.\", \"Goldman Sachs Group, Inc.\", \"Morgan Stanley\", \"American Express Company\"",
+															"];",
+															"",
+															"var randomItem = corporateName[Math.floor(Math.random() * corporateName.length)];",
+															"",
+															"return randomItem;",
+															"}",
+															"",
+															"var randomCompany = corporateName();",
+															"pm.environment.set(\"CorporateName\", randomCompany);",
+															"pm.environment.set(\"Matriz\", randomCompany);",
+															"",
+															"function gera_random(n) {",
+															"  var ranNum = Math.round(Math.random() * n);",
+															"  return ranNum;",
+															"}",
+															"",
+															"function mod(dividendo, divisor) {",
+															"  return Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);",
+															"}",
+															"",
+															"function generateCNPJ() {",
+															"  var n = 9;",
+															"  var n1 = gera_random(n);",
+															"  var n2 = gera_random(n);",
+															"  var n3 = gera_random(n);",
+															"  var n4 = gera_random(n);",
+															"  var n5 = gera_random(n);",
+															"  var n6 = gera_random(n);",
+															"  var n7 = gera_random(n);",
+															"  var n8 = gera_random(n);",
+															"  var n9 = 0;",
+															"  var n10 = 0;",
+															"  var n11 = 0;",
+															"  var n12 = 1;",
+															"  var d1 = n12 * 2 + n11 * 3 + n10 * 4 + n9 * 5 + n8 * 6 + n7 * 7 + n6 * 8 + n5 * 9 + n4 * 2 + n3 * 3 + n2 * 4 + n1 * 5;",
+															"  d1 = 11 - mod(d1, 11);",
+															"  if (d1 >= 10) d1 = 0;",
+															"  var d2 = d1 * 2 + n12 * 3 + n11 * 4 + n10 * 5 + n9 * 6 + n8 * 7 + n7 * 8 + n6 * 9 + n5 * 2 + n4 * 3 + n3 * 4 + n2 * 5 + n1 * 6;",
+															"  d2 = 11 - mod(d2, 11);",
+															"  if (d2 >= 10) d2 = 0;",
+															"  var resultado = '' + n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + d1 + d2;",
+															"  return resultado;",
+															"}",
+															"",
+															"pm.environment.set(\"CNPJCompany\", generateCNPJ());",
+															"",
+															"",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": {
+														"value": "{{Token}}",
+														"key": "token",
+														"in": "query"
+													}
+												},
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"S2\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{baseUrl}}/api/company"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "number",
+									"item": [
+										{
+											"name": "Numeric number",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function(){",
+															"    pm.response.to.have.status(400)",
+															"});",
+															"",
+															"pm.test(\"Verify number Message\", function(){",
+															"    pm.expect(pm.globals.get(\"MSGNumericZipCode\")).to.eql(JSON.parse(responseBody).error[0])",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"function corporateName(){",
+															"",
+															"    var corporateName = [",
+															"  \"Apple Inc.\", \"Microsoft Corporation\", \"Amazon.com Inc.\", \"Alphabet Inc.\",",
+															"  \"Facebook, Inc.\", \"Tesla, Inc.\", \"Walmart Inc.\", \"Johnson & Johnson\",",
+															"  \"JPMorgan Chase & Co.\", \"Berkshire Hathaway Inc.\", \"Visa Inc.\", \"Procter & Gamble Co.\",",
+															"  \"Intel Corporation\", \"Verizon Communications Inc.\", \"AT&T Inc.\", \"Cisco Systems, Inc.\",",
+															"  \"Netflix, Inc.\", \"The Coca-Cola Company\", \"Walt Disney Company\", \"Mastercard Incorporated\",",
+															"  \"Adobe Inc.\", \"Salesforce.com, Inc.\", \"IBM\", \"McDonald's Corporation\",",
+															"  \"PayPal Holdings, Inc.\", \"General Electric Company\", \"Nike, Inc.\", \"Oracle Corporation\",",
+															"  \"Accenture plc\", \"Target Corporation\", \"Exxon Mobil Corporation\", \"Boeing Co.\",",
+															"  \"General Motors Company\", \"Ford Motor Company\", \"Pfizer Inc.\", \"Caterpillar Inc.\",",
+															"  \"3M Company\", \"Honeywell International Inc.\", \"Abbott Laboratories\",",
+															"  \"Raytheon Technologies Corporation\", \"DuPont de Nemours, Inc.\", \"Lockheed Martin Corporation\",",
+															"  \"The Home Depot, Inc.\", \"Goldman Sachs Group, Inc.\", \"Morgan Stanley\", \"American Express Company\"",
+															"];",
+															"",
+															"var randomItem = corporateName[Math.floor(Math.random() * corporateName.length)];",
+															"",
+															"return randomItem;",
+															"}",
+															"",
+															"var randomCompany = corporateName();",
+															"pm.environment.set(\"CorporateName\", randomCompany);",
+															"pm.environment.set(\"Matriz\", randomCompany);",
+															"",
+															"function gera_random(n) {",
+															"  var ranNum = Math.round(Math.random() * n);",
+															"  return ranNum;",
+															"}",
+															"",
+															"function mod(dividendo, divisor) {",
+															"  return Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);",
+															"}",
+															"",
+															"function generateCNPJ() {",
+															"  var n = 9;",
+															"  var n1 = gera_random(n);",
+															"  var n2 = gera_random(n);",
+															"  var n3 = gera_random(n);",
+															"  var n4 = gera_random(n);",
+															"  var n5 = gera_random(n);",
+															"  var n6 = gera_random(n);",
+															"  var n7 = gera_random(n);",
+															"  var n8 = gera_random(n);",
+															"  var n9 = 0;",
+															"  var n10 = 0;",
+															"  var n11 = 0;",
+															"  var n12 = 1;",
+															"  var d1 = n12 * 2 + n11 * 3 + n10 * 4 + n9 * 5 + n8 * 6 + n7 * 7 + n6 * 8 + n5 * 9 + n4 * 2 + n3 * 3 + n2 * 4 + n1 * 5;",
+															"  d1 = 11 - mod(d1, 11);",
+															"  if (d1 >= 10) d1 = 0;",
+															"  var d2 = d1 * 2 + n12 * 3 + n11 * 4 + n10 * 5 + n9 * 6 + n8 * 7 + n7 * 8 + n6 * 9 + n5 * 2 + n4 * 3 + n3 * 4 + n2 * 5 + n1 * 6;",
+															"  d2 = 11 - mod(d2, 11);",
+															"  if (d2 >= 10) d2 = 0;",
+															"  var resultado = '' + n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + d1 + d2;",
+															"  return resultado;",
+															"}",
+															"",
+															"pm.environment.set(\"CNPJCompany\", generateCNPJ());",
+															"",
+															"",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": {
+														"value": "{{Token}}",
+														"key": "token",
+														"in": "query"
+													}
+												},
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"ASGFTasdf\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"Brasil\"\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{baseUrl}}/api/company"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "country",
+									"item": [
+										{
+											"name": "Only leters country",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function(){",
+															"    pm.response.to.have.status(400)",
+															"});",
+															"",
+															"pm.test(\"Verify country Message\", function(){",
+															"    pm.expect(pm.globals.get(\"MSGLetersState\")).to.eql(JSON.parse(responseBody).error[0])",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"function corporateName(){",
+															"",
+															"    var corporateName = [",
+															"  \"Apple Inc.\", \"Microsoft Corporation\", \"Amazon.com Inc.\", \"Alphabet Inc.\",",
+															"  \"Facebook, Inc.\", \"Tesla, Inc.\", \"Walmart Inc.\", \"Johnson & Johnson\",",
+															"  \"JPMorgan Chase & Co.\", \"Berkshire Hathaway Inc.\", \"Visa Inc.\", \"Procter & Gamble Co.\",",
+															"  \"Intel Corporation\", \"Verizon Communications Inc.\", \"AT&T Inc.\", \"Cisco Systems, Inc.\",",
+															"  \"Netflix, Inc.\", \"The Coca-Cola Company\", \"Walt Disney Company\", \"Mastercard Incorporated\",",
+															"  \"Adobe Inc.\", \"Salesforce.com, Inc.\", \"IBM\", \"McDonald's Corporation\",",
+															"  \"PayPal Holdings, Inc.\", \"General Electric Company\", \"Nike, Inc.\", \"Oracle Corporation\",",
+															"  \"Accenture plc\", \"Target Corporation\", \"Exxon Mobil Corporation\", \"Boeing Co.\",",
+															"  \"General Motors Company\", \"Ford Motor Company\", \"Pfizer Inc.\", \"Caterpillar Inc.\",",
+															"  \"3M Company\", \"Honeywell International Inc.\", \"Abbott Laboratories\",",
+															"  \"Raytheon Technologies Corporation\", \"DuPont de Nemours, Inc.\", \"Lockheed Martin Corporation\",",
+															"  \"The Home Depot, Inc.\", \"Goldman Sachs Group, Inc.\", \"Morgan Stanley\", \"American Express Company\"",
+															"];",
+															"",
+															"var randomItem = corporateName[Math.floor(Math.random() * corporateName.length)];",
+															"",
+															"return randomItem;",
+															"}",
+															"",
+															"var randomCompany = corporateName();",
+															"pm.environment.set(\"CorporateName\", randomCompany);",
+															"pm.environment.set(\"Matriz\", randomCompany);",
+															"",
+															"function gera_random(n) {",
+															"  var ranNum = Math.round(Math.random() * n);",
+															"  return ranNum;",
+															"}",
+															"",
+															"function mod(dividendo, divisor) {",
+															"  return Math.round(dividendo - Math.floor(dividendo / divisor) * divisor);",
+															"}",
+															"",
+															"function generateCNPJ() {",
+															"  var n = 9;",
+															"  var n1 = gera_random(n);",
+															"  var n2 = gera_random(n);",
+															"  var n3 = gera_random(n);",
+															"  var n4 = gera_random(n);",
+															"  var n5 = gera_random(n);",
+															"  var n6 = gera_random(n);",
+															"  var n7 = gera_random(n);",
+															"  var n8 = gera_random(n);",
+															"  var n9 = 0;",
+															"  var n10 = 0;",
+															"  var n11 = 0;",
+															"  var n12 = 1;",
+															"  var d1 = n12 * 2 + n11 * 3 + n10 * 4 + n9 * 5 + n8 * 6 + n7 * 7 + n6 * 8 + n5 * 9 + n4 * 2 + n3 * 3 + n2 * 4 + n1 * 5;",
+															"  d1 = 11 - mod(d1, 11);",
+															"  if (d1 >= 10) d1 = 0;",
+															"  var d2 = d1 * 2 + n12 * 3 + n11 * 4 + n10 * 5 + n9 * 6 + n8 * 7 + n7 * 8 + n6 * 9 + n5 * 2 + n4 * 3 + n3 * 4 + n2 * 5 + n1 * 6;",
+															"  d2 = 11 - mod(d2, 11);",
+															"  if (d2 >= 10) d2 = 0;",
+															"  var resultado = '' + n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12 + d1 + d2;",
+															"  return resultado;",
+															"}",
+															"",
+															"pm.environment.set(\"CNPJCompany\", generateCNPJ());",
+															"",
+															"",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": {
+														"value": "{{Token}}",
+														"key": "token",
+														"in": "query"
+													}
+												},
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"São Paulo\",\n      \"state\": \"SP\",\n      \"district\": \"Rua das Flores\",\n      \"street\": \"Avenida Interlagos\",\n      \"number\": \"50\",\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\n      \"country\": \"12423123\"\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{baseUrl}}/api/company"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Max characters",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function(){",
+													"    pm.response.to.have.status(400)",
+													"});",
+													"",
+													"pm.globals.set('MSGMaxCharactersAdress', 'O campo País permite até 50 caracteres.')",
+													"",
+													"pm.test(\"Verify corporateName Message\", function(){",
+													"    pm.expect(pm.globals.get(\"MSGMaxCharactersAdress\")).to.eql(JSON.parse(responseBody).error[0])",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"value": "{{Token}}",
+												"key": "token",
+												"in": "query"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"corporateName\": \"Teste do Teste\",\n  \"registerCompany\": \"12126456000155\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"Teste\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"99999999999999\",\n  \"serviceDescription\": \"Testes\",\n  \"address\": [\n    {\n      \"zipCode\": \"04777001\",\n      \"city\": \"{{LongFullName}}\",\n      \"state\": \"{{LongFullName}}\",\n      \"district\": \"{{LongFullName}}\",\n      \"street\": \"{{LongFullName}}\",\n      \"number\": \"{{LongFullName}}\",\n      \"complement\": \"{{LongFullName}}\",\n      \"country\": \"{{LongFullName}}\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/company"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Add new company with no info",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function(){",
+											"    pm.response.to.have.status(400)",
+											"});",
+											"",
+											"pm.test(\"Verify corporateName Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgCorporateNameIsRequired\")).to.eql(JSON.parse(responseBody).error[0])",
+											"});",
+											"",
+											"pm.test(\"Verify mail Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgMailIsRequired\")).to.eql(JSON.parse(responseBody).error[1])",
+											"});",
+											"",
+											"pm.test(\"Verify registerCompany Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgRegisterCompanyIsRequired\")).to.eql(JSON.parse(responseBody).error[2])",
+											"});",
+											"",
+											"pm.test(\"Verify matriz Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgMatrizIsRequired\")).to.eql(JSON.parse(responseBody).error[3])",
+											"});",
+											"",
+											"pm.test(\"Verify responsibleContact Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgResponsibleContactIsRequired\")).to.eql(JSON.parse(responseBody).error[4])",
+											"});",
+											"",
+											"pm.test(\"Verify telephone Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgTelephoneIsRequired\")).to.eql(JSON.parse(responseBody).error[5])",
+											"});",
+											"",
+											"pm.test(\"Verify serviceDescription Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgServiceDescriptionIsRequired\")).to.eql(JSON.parse(responseBody).error[6])",
+											"});",
+											"",
+											"pm.test(\"Verify zipCode Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgZipCodeIsRequired\")).to.eql(JSON.parse(responseBody).error[7])",
+											"});",
+											"",
+											"pm.test(\"Verify country Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgCountryIsRequired\")).to.eql(JSON.parse(responseBody).error[8])",
+											"});",
+											"",
+											"pm.test(\"Verify city Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgCityIsRequired\")).to.eql(JSON.parse(responseBody).error[9])",
+											"});",
+											"",
+											"pm.test(\"Verify state Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgStateIsRequired\")).to.eql(JSON.parse(responseBody).error[10])",
+											"});",
+											"",
+											"pm.test(\"Verify district Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgDistrictIsRequired\")).to.eql(JSON.parse(responseBody).error[11])",
+											"});",
+											"",
+											"pm.test(\"Verify street Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgStreetIsRequired\")).to.eql(JSON.parse(responseBody).error[12])",
+											"});",
+											"",
+											"pm.test(\"Verify number Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MsgNumberIsRequired\")).to.eql(JSON.parse(responseBody).error[13])",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "List company",
+					"item": [
+						{
+							"name": "Invalid URL",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function(){",
+											"    pm.response.to.have.status(404)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized access",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function(){",
+											"    pm.response.to.have.status(403)",
+											"});",
+											"",
+											"pm.test(\"Verify unauthorized message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGNoToken\")).to.eql(JSON.parse(responseBody).errors[0])",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}/api/company"
+							},
+							"response": []
+						},
+						{
+							"name": "Malformed ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 500\", function(){",
+											"    pm.response.to.have.status(500)",
+											"});",
+											"",
+											"pm.test(\"Verify malformedID message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGMalformedIDCompany\")).to.eql(JSON.parse(responseBody).error)",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}/api/company/9999999999999999999999"
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Company ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function(){",
+											"    pm.response.to.have.status(400)",
+											"});",
+											"",
+											"pm.test(\"Verify invalid company ID message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGInvalidCompanyID\")).to.eql(JSON.parse(responseBody).alert[0])",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}/api/company/65724aadde7aa59745192a19"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Edit company",
+					"item": [
+						{
+							"name": "Check max of 100 characters in corporateName and matriz",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function(){",
+											"    pm.response.to.have.status(200)",
+											"});",
+											"",
+											"pm.test(\"Verify update corporateName Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGMaxCharactersCorporateName\")).to.eql(JSON.parse(responseBody).error[0])",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify update matriz Message\", function(){",
+											"    pm.expect(pm.environment.get(\"MSGMaxCharactersMatriz\")).to.eql(JSON.parse(responseBody).error[1])",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"corporateName\": \"{{LongFullName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{LongFullName}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Check CNPJ and telephone mask",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function(){",
+											"    pm.response.to.have.status(200)",
+											"});",
+											"",
+											"pm.test(\"Verify update corporateName Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGMaxCharactersCorporateName\")).to.eql(JSON.parse(responseBody).error[0])",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Check telephone only numbers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function(){",
+											"    pm.response.to.have.status(200)",
+											"});",
+											"",
+											"pm.test(\"Verify update corporateName Message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGMaxCharactersCorporateName\")).to.eql(JSON.parse(responseBody).error[0])",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"adsfadg\",\n  \"serviceDescription\": \"Testes\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+							},
+							"response": []
+						},
+						{
+							"name": "invalid URL",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function(){",
+											"    pm.response.to.have.status(404)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized access",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function(){",
+											"    pm.response.to.have.status(403)",
+											"});",
+											"",
+											"pm.test(\"Verify unauthorized message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGNoToken\")).to.eql(JSON.parse(responseBody).errors[0])",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+							},
+							"response": []
+						},
+						{
+							"name": "invalid ID",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function(){",
+											"    pm.response.to.have.status(400)",
+											"});",
+											"",
+											"pm.test(\"Verify invalid ID message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGInvalidCompanyID\")).to.eql(JSON.parse(responseBody).alert[0])",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"corporateName\": \"{{CorporateName}}\",\n  \"registerCompany\": \"{{CNPJCompany}}\",\n  \"mail\": \"test@test.com\",\n  \"matriz\": \"{{Matriz}}\",\n  \"responsibleContact\": \"Marcio\",\n  \"telephone\": \"{{PhoneNumber}}\",\n  \"serviceDescription\": \"Testes\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company/65724aadde7aa59745192a19"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete company",
+					"item": [
+						{
+							"name": "Invalid URL",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function(){",
+											"    pm.response.to.have.status(404)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/"
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized access",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function(){",
+											"    pm.response.to.have.status(403)",
+											"});",
+											"",
+											"pm.test(\"Verify unauthorized message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGNoToken\")).to.eql(JSON.parse(responseBody).errors[0])",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Malformed ID",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 500\", function(){",
+											"    pm.response.to.have.status(500)",
+											"});",
+											"",
+											"pm.globals.set('MSGMalformedID', 'CastError: Cast to ObjectId failed for value \\\"9999999999999999999999\\\" (type string) at path \\\"_id\\\" for model \\\"Company\\\"')",
+											"",
+											"pm.test(\"Verify malformedID message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGMalformedID\")).to.eql(JSON.parse(responseBody).error)",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company/9999999999999999999999"
+							},
+							"response": []
+						},
+						{
+							"name": "Company not found",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function(){",
+											"    pm.response.to.have.status(404)",
+											"});",
+											"",
+											"pm.test(\"Verify unauthorized message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGNotFoundCompany\")).to.eql(JSON.parse(responseBody).msg)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/company/{{IdCompany}}"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

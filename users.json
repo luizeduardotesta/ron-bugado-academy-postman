@@ -1,0 +1,1290 @@
+{
+	"info": {
+		"_postman_id": "c88061ba-19b3-485b-b364-da8296905902",
+		"name": "02.Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26876722"
+	},
+	"item": [
+		{
+			"name": "Happy endnig",
+			"item": [
+				{
+					"name": "Add new valid user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function firstName(){",
+									"",
+									"    var firstName = [",
+									"  \"Lucas\", \"Isabella\", \"Enzo\", \"Manuela\", \"Miguel\",",
+									"  \"Sophia\", \"Arthur\", \"Valentina\", \"Bernardo\", \"Alice\",",
+									"  \"Heitor\", \"Laura\", \"Davi\", \"Helena\", \"Théo\",",
+									"  \"Maria Eduarda\", \"Pedro\", \"Clara\", \"Gabriel\", \"Sophia\",",
+									"  \"Matheus\", \"Valentina\", \"Enzo\", \"Larissa\", \"Miguel\",",
+									"  \"Isabela\", \"Lucca\", \"Mariana\", \"Theo\", \"Giovanna\",",
+									"  \"Samuel\", \"Clara\", \"João\", \"Alice\", \"Nicolas\",",
+									"  \"Maria Eduarda\", \"Gustavo\", \"Heloísa\", \"Murilo\", \"Ana Luiza\",",
+									"  \"Felipe\", \"Larissa\", \"João Pedro\", \"Rafaela\", \"Benjamin\",",
+									"  \"Laura\", \"Henrique\", \"Isadora\", \"Lucas\", \"Yasmin\"",
+									"];",
+									"",
+									"var randomItem = firstName[Math.floor(Math.random() * firstName.length)];",
+									"",
+									"return randomItem;",
+									"}",
+									"",
+									"pm.environment.set(\"FirstName\", firstName());",
+									"",
+									"function lastName(){",
+									"",
+									"    var lastName = [",
+									"  \"Oliveira\", \"Pereira\", \"Silva\", \"Santos\", \"Costa\",",
+									"  \"Lima\", \"Martins\", \"Almeida\", \"Ferreira\", \"Oliveira\",",
+									"  \"Souza\", \"Rodrigues\", \"Carvalho\", \"Nunes\", \"Rocha\",",
+									"  \"Lima\", \"Castro\", \"Rocha\", \"Barbosa\", \"Lima\",",
+									"  \"Pereira\", \"Alves\", \"Rodrigues\", \"Santos\", \"Costa\",",
+									"  \"Almeida\", \"Oliveira\", \"Lima\", \"Rodrigues\", \"Pereira\",",
+									"  \"Castro\", \"Rocha\", \"Martins\", \"Oliveira\", \"Souza\",",
+									"  \"Lima\", \"Alves\", \"Rocha\", \"Santos\", \"Lima\",",
+									"  \"Almeida\", \"Santos\", \"Oliveira\", \"Costa\", \"Rocha\",",
+									"  \"Rodrigues\", \"Barbosa\", \"Souza\", \"Martins\", \"Lima\"",
+									"];",
+									"",
+									"var randomItem = lastName[Math.floor(Math.random() * lastName.length)];",
+									"",
+									"return randomItem;",
+									"}",
+									"",
+									"pm.environment.set(\"LastName\", lastName());",
+									"",
+									"pm.environment.set(\"FullName\", pm.variables.get(\"FirstName\")+ \" \" +pm.variables.get(\"LastName\"));",
+									"",
+									"function removeAccents(str){",
+									"    return str.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, '');",
+									"};",
+									"",
+									"function mail(){",
+									"    const firstNameWithAccents = pm.variables.get(\"FirstName\");",
+									"    const firstNameWithoutAccents = removeAccents(firstNameWithAccents);",
+									"",
+									"    pm.environment.set(",
+									"        \"Mail\",",
+									"        pm.variables.replaceIn('{{$guid}}') + \"-\" + firstNameWithoutAccents + \"@qacoders-treinamento.com\"",
+									"    );",
+									"}",
+									"",
+									"mail();",
+									"",
+									"function generateCPF(){",
+									"    const randomDigit = () => Math.floor(Math.random() * 10);",
+									"",
+									"    const cpfDigits = Array.from({ length: 9 }, randomDigit);",
+									"",
+									"    let sum = 0;",
+									"    for (let i = 10; i > 1; i--){",
+									"        sum += cpfDigits[10 - i] * i;",
+									"    }",
+									"    const firstVerifierDigit = (sum * 10) % 11;",
+									"    cpfDigits.push(firstVerifierDigit === 10 ? 0 : firstVerifierDigit);",
+									"",
+									"    sum = 0;",
+									"    for (let i = 11; i > 1; i--){",
+									"        sum +=cpfDigits[11 - i] * i;",
+									"    }",
+									"    const secondVerifierDigit = (sum * 10) % 11;",
+									"    cpfDigits.push(secondVerifierDigit === 10 ? 0 : secondVerifierDigit);",
+									"",
+									"    return cpfDigits.join('');",
+									"}",
+									"",
+									"pm.environment.set(\"CPFUser\", generateCPF());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function(){",
+									"    pm.response.to.have.status(201)",
+									"});",
+									"",
+									"pm.test(\"Verify the fullName\", function(){",
+									"    pm.expect(pm.environment.get(\"FullName\")).to.eql(JSON.parse(responseBody).user.fullName)",
+									"});",
+									"",
+									"pm.test(\"Verify the mail\", function(){",
+									"    pm.expect(pm.environment.get(\"Mail\")).to.eql(JSON.parse(responseBody).user.mail)",
+									"});",
+									"",
+									"pm.test(\"Verify the cpf\", function(){",
+									"    pm.expect(pm.environment.get(\"CPFUser\")).to.eql(JSON.parse(responseBody).user.cpf)",
+									"});",
+									"",
+									"pm.test(\"Password and ConfirmPassword are equal\", function (){",
+									"    pm.expect(JSON.parse(responseBody).user.password).to.eql(JSON.parse(responseBody).user.confirmPassword)",
+									"});",
+									"",
+									"pm.test(\"Register message if its a success\", function(){",
+									"    let fullName = pm.response.json().user.fullName;",
+									"",
+									"    pm.expect(pm.response.text()).to.include(`Olá ${fullName} cadastro realizado com sucesso.`);",
+									"});",
+									"",
+									"// Função para validar o formato do e-mail",
+									"function validarFormatoEmail(email) {",
+									"    const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$/;",
+									"",
+									"    return regexEmail.test(email);",
+									"}",
+									"",
+									"// Função para validar o domínio do e-mail",
+									"function validarDominioEmail(email) {",
+									"    const dominiosValidos = [\"com\", \"com.br\", \"net\", \"org\"];",
+									"",
+									"    const dominio = email.split('.').pop();",
+									"",
+									"    return dominiosValidos.includes(dominio);",
+									"}",
+									"",
+									"pm.test(\"Formato e domínio de e-mail válidos\", function() {",
+									"    const email = pm.environment.get(\"Mail\");",
+									"",
+									"    pm.expect(validarFormatoEmail(email)).to.be.true;",
+									"    pm.expect(validarDominioEmail(email)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"IdUser\", JSON.parse(responseBody).user._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"{{FullName}}\",\n  \"mail\": \"{{Mail}}\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": {{CPFUser}},\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Success message with the Admin name\", function(){",
+									"    let fullName = pm.response.json().user.fullName;",
+									"",
+									"    pm.expect(pm.response.text()).to.include(`Olá ${fullName}, autenticação autorizada com sucesso!`);",
+									"});",
+									"",
+									"pm.test(\"Verify token\", function(){",
+									"    pm.expect(JSON.parse(responseBody)).to.have.property(\"token\");",
+									"});",
+									"",
+									"pm.environment.set(\"TokenUser\", JSON.parse(responseBody).token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mail\": \"{{Mail}}\",\n  \"password\": \"{{Password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/login"
+					},
+					"response": []
+				},
+				{
+					"name": "List all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"in": "query",
+								"value": "{{TokenUser}}",
+								"key": "token"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function firstName(){",
+									"",
+									"    var firstName = [",
+									"  \"Lucas\", \"Isabella\", \"Enzo\", \"Manuela\", \"Miguel\",",
+									"  \"Sophia\", \"Arthur\", \"Valentina\", \"Bernardo\", \"Alice\",",
+									"  \"Heitor\", \"Laura\", \"Davi\", \"Helena\", \"Théo\",",
+									"  \"Eduarda\", \"Pedro\", \"Clara\", \"Gabriel\", \"Sophia\",",
+									"  \"Matheus\", \"Valentina\", \"Enzo\", \"Larissa\", \"Miguel\",",
+									"  \"Isabela\", \"Lucca\", \"Mariana\", \"Theo\", \"Giovanna\",",
+									"  \"Samuel\", \"Clara\", \"João\", \"Alice\", \"Nicolas\",",
+									"  \"Maria\", \"Gustavo\", \"Heloísa\", \"Murilo\", \"Ana\", \"Luiza\",",
+									"  \"Felipe\", \"Larissa\", \"João\", \"Rafaela\", \"Benjamin\",",
+									"  \"Laura\", \"Henrique\", \"Isadora\", \"Lucas\", \"Yasmin\"",
+									"];",
+									"",
+									"var randomItem = firstName[Math.floor(Math.random() * firstName.length)];",
+									"",
+									"return randomItem;",
+									"}",
+									"",
+									"pm.environment.set(\"FirstName\", firstName());",
+									"",
+									"function lastName(){",
+									"",
+									"    var lastName = [",
+									"  \"Oliveira\", \"Pereira\", \"Silva\", \"Santos\", \"Costa\",",
+									"  \"Lima\", \"Martins\", \"Almeida\", \"Ferreira\", \"Oliveira\",",
+									"  \"Souza\", \"Rodrigues\", \"Carvalho\", \"Nunes\", \"Rocha\",",
+									"  \"Lima\", \"Castro\", \"Rocha\", \"Barbosa\", \"Lima\",",
+									"  \"Pereira\", \"Alves\", \"Rodrigues\", \"Santos\", \"Costa\",",
+									"  \"Almeida\", \"Oliveira\", \"Lima\", \"Rodrigues\", \"Pereira\",",
+									"  \"Castro\", \"Rocha\", \"Martins\", \"Oliveira\", \"Souza\",",
+									"  \"Lima\", \"Alves\", \"Rocha\", \"Santos\", \"Lima\",",
+									"  \"Almeida\", \"Santos\", \"Oliveira\", \"Costa\", \"Rocha\",",
+									"  \"Rodrigues\", \"Barbosa\", \"Souza\", \"Martins\", \"Lima\"",
+									"];",
+									"",
+									"var randomItem = lastName[Math.floor(Math.random() * lastName.length)];",
+									"",
+									"return randomItem;",
+									"}",
+									"",
+									"pm.environment.set(\"LastName\", lastName());",
+									"",
+									"pm.environment.set(\"FullName\", pm.variables.get(\"FirstName\")+ \" \" +pm.variables.get(\"LastName\"));",
+									"",
+									"function removeAccents(str){",
+									"    return str.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, '');",
+									"};",
+									"",
+									"function mail(){",
+									"    const firstNameWithAccents = pm.variables.get(\"FirstName\");",
+									"    const firstNameWithoutAccents = removeAccents(firstNameWithAccents);",
+									"",
+									"    pm.environment.set(",
+									"        \"Mail\",",
+									"        pm.variables.replaceIn('{{$guid}}') + \"-\" + firstNameWithoutAccents + \"@qacoders-treinamento.com\"",
+									"    );",
+									"}",
+									"",
+									"mail();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.globals.set('MsgUserUpdated', 'Dados atualizados com sucesso!');",
+									"",
+									"pm.test(\"Verify Message\", function(){",
+									"    pm.expect(pm.globals.get(\"MsgUserUpdated\")).to.eql(JSON.parse(responseBody).msg)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{TokenUser}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"{{FullName}}\",\n  \"mail\": \"{{Mail}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user/{{IdUser}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function gerarSenha(){",
+									"    const caracteres = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%\";",
+									"    const comprimentoMinimo = 8;",
+									"    const comprimentoMaximo = 12;",
+									"",
+									"    let senhaArray = [];",
+									"",
+									"    senhaArray.push(caracteres[Math.floor(Math.random() * 26)]);",
+									"    senhaArray.push(caracteres[26 + Math.floor(Math.random() * 26)]);",
+									"    senhaArray.push(caracteres[52 + Math.floor(Math.random() * 10)]);",
+									"    senhaArray.push(caracteres[62 + Math.floor(Math.random() * 4)]);",
+									"",
+									"    const comprimentoRestante = Math.max(comprimentoMinimo - senhaArray.length,",
+									"        comprimentoMaximo - senhaArray.length);",
+									"",
+									"    for(let i = 0; i < comprimentoRestante; i++){",
+									"        senhaArray.push(caracteres[Math.floor(Math.random() * caracteres.length)]);",
+									"    }",
+									"",
+									"    return shuffleString(senhaArray.join(\"\"));",
+									"};",
+									"",
+									"function shuffleString(string){",
+									"    return string.split(\"\").sort(() => Math.random() - 0.5).join(\"\");",
+									"};",
+									"",
+									"pm.environment.set(\"NewPassword\", gerarSenha());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Verify Message\", function(){",
+									"    pm.expect(pm.globals.get(\"MsgChangedPassword\")).to.eql(JSON.parse(responseBody).msg)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{TokenUser}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"{{NewPassword}}\",\n  \"confirmPassword\": \"{{NewPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user/password/{{IdUser}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user status",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function gerarSenha(){",
+									"    const caracteres = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%\";",
+									"    const comprimentoMinimo = 8;",
+									"    const comprimentoMaximo = 12;",
+									"",
+									"    let senhaArray = [];",
+									"",
+									"    senhaArray.push(caracteres[Math.floor(Math.random() * 26)]);",
+									"    senhaArray.push(caracteres[26 + Math.floor(Math.random() * 26)]);",
+									"    senhaArray.push(caracteres[52 + Math.floor(Math.random() * 10)]);",
+									"    senhaArray.push(caracteres[62 + Math.floor(Math.random() * 4)]);",
+									"",
+									"    const comprimentoRestante = Math.max(comprimentoMinimo - senhaArray.length,",
+									"        comprimentoMaximo - senhaArray.length);",
+									"",
+									"    for(let i = 0; i < comprimentoRestante; i++){",
+									"        senhaArray.push(caracteres[Math.floor(Math.random() * caracteres.length)]);",
+									"    }",
+									"",
+									"    return shuffleString(senhaArray.join(\"\"));",
+									"};",
+									"",
+									"function shuffleString(string){",
+									"    return string.split(\"\").sort(() => Math.random() - 0.5).join(\"\");",
+									"};",
+									"",
+									"pm.environment.set(\"NewPassword\", gerarSenha());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.globals.set('MsgChangedStatus', 'Status do usuario atualizado com sucesso para status true.');",
+									"",
+									"pm.test(\"Verify Message\", function(){",
+									"    pm.expect(pm.globals.get(\"MsgChangedStatus\")).to.eql(JSON.parse(responseBody).msg)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user/status/{{IdUser}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete admin user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.globals.set('MsgDeleteUserId', 'Usuário deletado com sucesso!.');",
+									"",
+									"pm.test(\"Verify delete Message\", function(){",
+									"    pm.expect(pm.globals.get(\"MsgDeleteUserId\")).to.eql(JSON.parse(responseBody).msg)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/api/user/{{IdUser}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy endnig - fullName",
+			"item": [
+				{
+					"name": "User without a name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Full Name not exists\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"O campo nome completo é obrigatório.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"\",\n  \"mail\": \"Benjamin@qacoders-treinamento.com\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User name bigger than 100 characters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomString(length) {",
+									"    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';",
+									"    let result = '';",
+									"    for (let i = 0; i < length; i++) {",
+									"        result += characters.charAt(Math.floor(Math.random() * characters.length));",
+									"    }",
+									"    return result;",
+									"}",
+									"",
+									"// Generate a full name with 101 characters",
+									"const longFullName = generateRandomString(99); ",
+									"pm.environment.set(\"LongFullName\", longFullName + \" \" + \"J\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Full Name Have more than 100 characters\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"O nome completo deve ter no máximo 100 caracteres.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"{{LongFullName}}\",\n  \"mail\": \"Benjamin@qacoders-treinamento.com\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User fullName contain leters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Full Name contain numbers\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"O campo nome completo deve permitir apenas letras.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benj4min Santos!\",\n  \"mail\": \"Benjamin@qacoders-treinamento.com\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User name should contain name and Surname",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Full Name contain Name and Suename\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"Informe o nome e sobrenome com as iniciais em letra maiúscula.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benjamin\",\n  \"mail\": \"Benjamin@qacoders-treinamento.com\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy endnig - mail",
+			"item": [
+				{
+					"name": "User without mail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Mail not exists\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"O campo e-mail é obrigatório.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benjamin Santos\",\n  \"mail\": \"\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User mail worng format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Mail have the wrong format\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"O e-mail informado é inválido. Informe um e-mail no formato [nome@domínio.com].\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benjamin Santos\",\n  \"mail\": \"jão@jedi\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User mail cano't have blank spaces",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Mail have the can't be blank\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"O e-mail informado é não pode conter espaços em branco.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benjamin Santos\",\n  \"mail\": \"Ben            jamin@qacoders-treinamento.com\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy endnig - password",
+			"item": [
+				{
+					"name": "User without password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Password not exists\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"Campo senha é obrigatório\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benjamin Santos\",\n  \"mail\": \"Benjamin@qacoders-treinamento.com\",\n  \"password\": \"\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User password must meet the requirements",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"",
+									"if (response.error && response.error.length > 0) {",
+									"    const errorMessage = response.error[0];",
+									"",
+									"    pm.test(\"Password meets requirements\", function() {",
+									"        pm.expect(errorMessage).to.include(\"Senha precisa ter: uma letra maiúscula, uma letra minúscula, um número, um caractere especial(@#$%) e tamanho entre 8-16.\");",
+									"    });",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benjamin Santos\",\n  \"mail\": \"Benjamin@qacoders-treinamento.com\",\n  \"password\": \"1234@Te\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Te\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy endnig - confirmPassword",
+			"item": [
+				{
+					"name": "User without confirmPassword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Password not exists\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"O campo de confirmação de senha não pode ficar vazio.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benjamin Santos\",\n  \"mail\": \"Benjamin@qacoders-treinamento.com\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User password and confirm password do not match",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Password not exists\", function() {",
+									"    var errorMessage = JSON.parse(responseBody).error[0];",
+									"    ",
+									"    pm.expect(errorMessage).to.include(\"As senhas não coincidem.\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Benjamin Santos\",\n  \"mail\": \"Benjamin@qacoders-treinamento.com\",\n  \"password\": \"1234@Test\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": 42085289828,\n  \"confirmPassword\": \"1234@Tesr\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy endnig - Login",
+			"item": [
+				{
+					"name": "Login invalid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Login invalid data\", function() {",
+									"    pm.expect(pm.response.text()).to.include(`Os dados informados são inválidos`);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mail\": \"\",\n  \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy endnig - Update",
+			"item": [
+				{
+					"name": "Update user repeated password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", function(){",
+									"    pm.response.to.have.status(409)",
+									"});",
+									"",
+									"pm.test(\"Verify Message\", function(){",
+									"    pm.expect(pm.globals.get(\"MsgChangedPasswordAlreadyUsed\")).to.eql(JSON.parse(responseBody).msg)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{TokenUser}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"{{Password}}\",\n  \"confirmPassword\": \"{{ConfirmPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/user/password/{{IdUser}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy ending - delete admin user id",
+			"item": [
+				{
+					"name": "Delete admin user id without admin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function(){",
+									"    pm.response.to.have.status(403)",
+									"});",
+									"",
+									"pm.test(\"Verify delete Message\", function(){",
+									"    pm.expect(pm.globals.get(\"MsgDeleteWithoutPermission\")).to.eql(JSON.parse(responseBody).errors[0])",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/api/user/{{IdUser}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete admin user id that not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400)",
+									"});",
+									"",
+									"pm.test(\"Verify delete Message\", function(){",
+									"    pm.expect(pm.globals.get(\"MsgDeleteUnexistentUserId\")).to.eql(JSON.parse(responseBody).alert[0])",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/api/user/{{IdUser}}"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

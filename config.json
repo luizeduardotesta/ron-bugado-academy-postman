@@ -1,0 +1,49 @@
+{
+	"info": {
+		"_postman_id": "17bd80e2-2d78-4426-9ce4-526c5764beef",
+		"name": "01.Config",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26876722"
+	},
+	"item": [
+		{
+			"name": "Login - Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Success message with the Admin name\", function(){",
+							"    let fullName = pm.response.json().user.fullName;",
+							"",
+							"    pm.expect(pm.response.text()).to.include(`Olá ${fullName}, autenticação autorizada com sucesso!`);",
+							"});",
+							"",
+							"pm.globals.set(\"Token\", JSON.parse(responseBody).token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mail\": \"{{mailAdmin}}\",\n    \"password\": \"{{passwordAdmin}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/api/login"
+			},
+			"response": []
+		}
+	]
+}

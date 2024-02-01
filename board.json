@@ -1,0 +1,995 @@
+{
+	"info": {
+		"_postman_id": "fe019814-db5c-4f36-900e-7c9338661d7a",
+		"name": "04.Board",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26876722"
+	},
+	"item": [
+		{
+			"name": "Happy ending",
+			"item": [
+				{
+					"name": "Register board",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function boardName(){",
+									"",
+									"var boardName = [",
+									"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+									"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+									"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\", \"Projetos\", \"Inovação\", \"Administração\",",
+									"  \"Design\", \"Produção\", \"Educação\", \"Pesquisa e Desenvolvimento\", \"Suporte ao Cliente\",",
+									"  \"Manufatura\", \"Engenharia\", \"Eventos\", \"Serviços ao Consumidor\", \"Mídias Sociais\",",
+									"  \"Analytics\", \"Auditoria\", \"Compras\", \"Segurança da Informação\", \"Saúde e Bem-Estar\",",
+									"  \"Arquitetura\", \"Transporte\", \"Consultoria\", \"Parcerias\", \"Governança\", \"Cultura Organizacional\",",
+									"  \"Desempenho\", \"Internacional\", \"Diversidade e Inclusão\", \"Alianças Estratégicas\",",
+									"  \"Planejamento\", \"Treinamento\", \"Responsabilidade Social\", \"Assuntos Regulatórios\",",
+									"  \"Propriedade Intelectual\", \"Assuntos Públicos\", \"Pesquisa de Mercado\", \"Planejamento Financeiro\"",
+									"];",
+									"",
+									"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+									"",
+									"return randomItem;",
+									"}",
+									"",
+									"pm.environment.set(\"boardName\", boardName());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', function () {",
+									"    pm.response.to.have.status(201);",
+									"})",
+									"",
+									"pm.test('Verify the boardName', function () {",
+									"    pm.expect(pm.environment.get('boardName')).to.eql(pm.response.json().newBoard.boardName);",
+									"})",
+									"",
+									"pm.test('Verify the boardCode length', function () {",
+									"    pm.expect(pm.response.json().newBoard.boardCode.length).to.equal(2);",
+									"})",
+									"",
+									"pm.test('Verify if the boardCode is sequential', function () {",
+									"    let previousCode = parseInt(pm.environment.get(\"previousBoardCode\"));",
+									"    let currentCode = parseInt(pm.response.json().newBoard.boardCode);",
+									"    ",
+									"    if (previousCode > 0) {",
+									"        pm.expect(currentCode).to.eql(previousCode + 1);",
+									"    }",
+									"});",
+									"",
+									"pm.environment.set('previousBoardCode', pm.response.json().newBoard.boardCode)",
+									"",
+									"pm.environment.set('IdBoard', pm.response.json().newBoard._id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"boardName\": \"{{boardName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/board"
+					},
+					"response": []
+				},
+				{
+					"name": "List all boards",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/board"
+					},
+					"response": []
+				},
+				{
+					"name": "Count all boards",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Count all registered boards\", function(){",
+									"var responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.have.property(\"count\");",
+									"",
+									"    pm.expect(responseData.count).to.be.a('number');",
+									"    pm.expect(responseData.count).to.satisfy((count) => count > 0);",
+									"    pm.expect(responseData.count % 1).to.eql(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/board/count"
+					},
+					"response": []
+				},
+				{
+					"name": "List board by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Check the board ID\", function(){",
+									"    pm.expect(pm.environment.get(\"IdBoard\")).to.eql(JSON.parse(responseBody).board._id)",
+									"});",
+									"",
+									"pm.test(\"Check the boardName\", function(){",
+									"    pm.expect(pm.environment.get(\"boardName\")).to.eql(JSON.parse(responseBody).board.boardName)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/board/{{IdBoard}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit board by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function boardName(){",
+									"",
+									"var boardName = [",
+									"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+									"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+									"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\", \"Projetos\", \"Inovação\", \"Administração\",",
+									"  \"Design\", \"Produção\", \"Educação\", \"Pesquisa e Desenvolvimento\", \"Suporte ao Cliente\",",
+									"  \"Manufatura\", \"Engenharia\", \"Eventos\", \"Serviços ao Consumidor\", \"Mídias Sociais\",",
+									"  \"Analytics\", \"Auditoria\", \"Compras\", \"Segurança da Informação\", \"Saúde e Bem-Estar\",",
+									"  \"Arquitetura\", \"Transporte\", \"Consultoria\", \"Parcerias\", \"Governança\", \"Cultura Organizacional\",",
+									"  \"Desempenho\", \"Internacional\", \"Diversidade e Inclusão\", \"Alianças Estratégicas\",",
+									"  \"Planejamento\", \"Treinamento\", \"Responsabilidade Social\", \"Assuntos Regulatórios\",",
+									"  \"Propriedade Intelectual\", \"Assuntos Públicos\", \"Pesquisa de Mercado\", \"Planejamento Financeiro\"",
+									"];",
+									"",
+									"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+									"",
+									"return randomItem;",
+									"}",
+									"",
+									"pm.environment.set(\"boardName\", boardName());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test(\"Check the board ID\", function(){",
+									"    pm.expect(pm.environment.get(\"IdBoard\")).to.eql(JSON.parse(responseBody).updatedBoard._id)",
+									"});",
+									"",
+									"pm.test(\"Check the boardName\", function(){",
+									"    pm.expect(pm.environment.get(\"boardName\")).to.eql(JSON.parse(responseBody).updatedBoard.boardName)",
+									"});",
+									"",
+									"pm.test(\"Verify editBoardName Message\", function(){",
+									"    pm.expect(pm.globals.get(\"MSGEditBoard\")).to.eql(JSON.parse(responseBody).msg)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "{{Token}}",
+								"key": "token",
+								"in": "query"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"boardName\": \"{{boardName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/board/{{IdBoard}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unhappy ending",
+			"item": [
+				{
+					"name": "Register Board",
+					"item": [
+						{
+							"name": "Duplicate boardName",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function boardName(){",
+											"",
+											"    var boardName = [",
+											"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+											"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+											"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\"",
+											"];",
+											"",
+											"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+											"",
+											"return randomItem;",
+											"}",
+											"",
+											"pm.environment.set(\"boardName\", boardName());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 409', function () {",
+											"    pm.response.to.have.status(409);",
+											"})",
+											"",
+											"pm.test('Verify the duplicate message', function () {",
+											"    pm.expect(pm.globals.get('MsgDuplicateBoardName')).to.eql(JSON.parse(responseBody).alert[0]);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardName\": \"{{boardName}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board"
+							},
+							"response": []
+						},
+						{
+							"name": "Register board with empty name",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function boardName(){",
+											"",
+											"    var boardName = [",
+											"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+											"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+											"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\"",
+											"];",
+											"",
+											"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+											"",
+											"return randomItem;",
+											"}",
+											"",
+											"pm.environment.set(\"boardName\", boardName());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {",
+											"    pm.response.to.have.status(400);",
+											"})",
+											"",
+											"pm.test('Verify the empty boardName message', function () {",
+											"    pm.expect(pm.globals.get('MSGBoardIsRequired')).to.eql(JSON.parse(responseBody).error[0]);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardName\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board"
+							},
+							"response": []
+						},
+						{
+							"name": "boardName permited  characters",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function boardName(){",
+											"",
+											"    var boardName = [",
+											"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+											"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+											"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\"",
+											"];",
+											"",
+											"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+											"",
+											"return randomItem;",
+											"}",
+											"",
+											"pm.environment.set(\"boardName\", boardName());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {",
+											"    pm.response.to.have.status(400);",
+											"})",
+											"",
+											"pm.test('Verify the permited characters message', function () {",
+											"    pm.expect(pm.globals.get('MsgBoardNamePermitedCharacters')).to.eql(JSON.parse(responseBody).error[0]);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardName\": \"{{}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board"
+							},
+							"response": []
+						},
+						{
+							"name": "boardName max  characters",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function boardName(){",
+											"",
+											"    var boardName = [",
+											"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+											"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+											"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\"",
+											"];",
+											"",
+											"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+											"",
+											"return randomItem;",
+											"}",
+											"",
+											"pm.environment.set(\"boardName\", boardName());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {",
+											"    pm.response.to.have.status(400);",
+											"})",
+											"",
+											"pm.test('Verify boardName max characters message', function () {",
+											"    pm.expect(pm.globals.get('MSGMaxCharactersBoardName')).to.eql(JSON.parse(responseBody).error[0]);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardName\": \"{{LongFullName}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "List Board",
+					"item": [
+						{
+							"name": "Invalid URL",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function(){",
+											"    pm.response.to.have.status(404)",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Unauthorized access",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function(){",
+											"    pm.response.to.have.status(403)",
+											"});",
+											"",
+											"pm.test(\"Verify unauthorized message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGNoToken\")).to.eql(JSON.parse(responseBody).errors[0])",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board"
+							},
+							"response": []
+						},
+						{
+							"name": "Malformed ID",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 500\", function(){",
+											"    pm.response.to.have.status(500)",
+											"});",
+											"",
+											"pm.test(\"Verify malformedID message\", function(){",
+											"    pm.expect(pm.globals.get(\"MSGMalformedIDBoard\")).to.eql(JSON.parse(responseBody).error)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board/9999999999999999999999"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Edit Board",
+					"item": [
+						{
+							"name": "Edit board permited characters",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function boardName(){",
+											"",
+											"    var boardName = [",
+											"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+											"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+											"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\"",
+											"];",
+											"",
+											"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+											"",
+											"return randomItem;",
+											"}",
+											"",
+											"pm.environment.set(\"boardName\", boardName());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function(){",
+											"    pm.response.to.have.status(400)",
+											"});",
+											"",
+											"pm.test('Verify the boardName message', function () {",
+											"    pm.expect(pm.globals.get('MsgBoardNamePermitedCharacters')).to.eql(JSON.parse(responseBody).error[0]);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardName\": \"{{}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board/{{IdBoard}}"
+							},
+							"response": []
+						},
+						{
+							"name": "boardName max  characters Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function boardName(){",
+											"",
+											"    var boardName = [",
+											"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+											"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+											"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\"",
+											"];",
+											"",
+											"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+											"",
+											"return randomItem;",
+											"}",
+											"",
+											"pm.environment.set(\"boardName\", boardName());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 400', function () {",
+											"    pm.response.to.have.status(400);",
+											"})",
+											"",
+											"pm.test('Verify boardName max characters message', function () {",
+											"    pm.expect(pm.globals.get('MSGMaxCharactersBoardName')).to.eql(JSON.parse(responseBody).error[0]);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardName\": \"{{LongFullName}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board/{{IdBoard}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Duplicate boardName Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function boardName(){",
+											"",
+											"    var boardName = [",
+											"  \"Operações\", \"Financeira\", \"Tecnologia\", \"Recursos Humanos\", \"Marketing\",",
+											"  \"Vendas\", \"Desenvolvimento\", \"Logística\", \"Jurídica\", \"Executiva\", \"Administrativa\",",
+											"  \"Qualidade\", \"Sustentabilidade\", \"Comunicação\"",
+											"];",
+											"",
+											"var randomItem = boardName[Math.floor(Math.random() * boardName.length)];",
+											"",
+											"return randomItem;",
+											"}",
+											"",
+											"pm.environment.set(\"boardName\", boardName());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 409', function () {",
+											"    pm.response.to.have.status(409);",
+											"})",
+											"",
+											"pm.test('Verify the duplicate message', function () {",
+											"    pm.expect(pm.globals.get('MsgDuplicateBoardName')).to.eql(JSON.parse(responseBody).alert[0]);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"value": "{{Token}}",
+										"key": "token",
+										"in": "query"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"boardName\": \"{{boardName}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/board/{{IdBoard}}"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
