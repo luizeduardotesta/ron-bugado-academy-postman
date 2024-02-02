@@ -9,37 +9,37 @@
 		},
 		{
 			"key": "FirstName",
-			"value": "",
+			"value": "Sophia",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "LastName",
-			"value": "",
+			"value": "Oliveira",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "FullName",
-			"value": "",
+			"value": "Sophia Oliveira",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "Mail",
-			"value": "",
-			"type": "any",
+			"value": "4f8b65c3-a09d-423e-a99b-65b795e99cff-Sophia@qacoders-treinamento.com",
+			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "CPFUser",
-			"value": "",
-			"type": "any",
+			"value": "78352533720",
+			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "IdUser",
-			"value": "",
+			"value": "65bc3b3dcd0b16d9d85d6ff7",
 			"type": "any",
 			"enabled": true
 		},
@@ -52,42 +52,42 @@
 		{
 			"key": "Password",
 			"value": "1234@Test",
-			"type": "default",
+			"type": "secret",
 			"enabled": true
 		},
 		{
 			"key": "ConfirmPassword",
 			"value": "1234@Test",
-			"type": "default",
+			"type": "secret",
 			"enabled": true
 		},
 		{
 			"key": "TokenUser",
-			"value": "",
-			"type": "any",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWJjM2IzZGNkMGIxNmQ5ZDg1ZDZmZjciLCJmdWxsTmFtZSI6IlNhbXVlbCBNYXJ0aW5zIiwibWFpbCI6ImFjNmZmZGQxLTNmNWYtNDU3Yy05MzgxLTE5ODhjZTkyMGI2My1TYW11ZWxAcWFjb2RlcnMtdHJlaW5hbWVudG8uY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkN0dKa1lKaW5CdFVTUDNIQUQudTZWLmFKMmR4U1QxYk1ENnZ2a0xEZ3NiL084dzdoSVdaL0MiLCJhY2Nlc3NQcm9maWxlIjoiQURNSU4iLCJjcGYiOiI3ODM1MjUzMzcyMCIsInN0YXR1cyI6dHJ1ZSwiYXVkaXQiOlt7InJlZ2lzdGVyZWRCeSI6eyJ1c2VySWQiOiI2NTMzMGI1NGRhOTg2MTk5NWQ0ZWIzMDIiLCJ1c2VyTG9naW4iOiJzeXNhZG1pbkBxYWNvZGVycy5jb20ifSwicmVnaXN0cmF0aW9uRGF0ZSI6InF1aW50YS1mZWlyYSwgMDEvMDIvMjAyNCwgMjE6NDU6NDkgQlJUIiwicmVnaXN0cmF0aW9uTnVtYmVyIjoiUWFDb2RlcnMtMzA0IiwiX2lkIjoiNjViYzNiM2RjZDBiMTZkOWQ4NWQ2ZmY4In1dLCJfX3YiOjAsImlhdCI6MTcwNjgzNDc0OSwiZXhwIjoxNzA2OTIxMTQ5fQ.o45JAtfFf4HyhSNBkODz370qkE1ojW3s3NsUANyOVxY",
+			"type": "secret",
 			"enabled": true
 		},
 		{
 			"key": "NewPassword",
-			"value": "",
+			"value": "sCr82#BrySW$",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "CorporateName",
-			"value": "",
+			"value": "Accenture plc",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "CNPJCompany",
-			"value": "",
+			"value": "23547914000172",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "Matriz",
-			"value": "",
+			"value": "Accenture plc",
 			"type": "any",
 			"enabled": true
 		},
@@ -105,43 +105,43 @@
 		},
 		{
 			"key": "IdCompany",
-			"value": "",
+			"value": "65bbe56ccd0b16d9d85d6fbe",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "IdBoard",
-			"value": "",
+			"value": "65b30aa3cd0b16d9d85d5fba",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "boardName",
-			"value": "",
+			"value": "Pesquisa e Desenvolvimento",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "previousBoardCode",
-			"value": "",
+			"value": "34",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "costCenterName",
-			"value": "",
+			"value": "Manufatura",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "lastCostCenterNumber",
-			"value": "",
+			"value": "8",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "IdcostCenter",
-			"value": "",
+			"value": "65b271a2cd0b16d9d85d527c",
 			"type": "any",
 			"enabled": true
 		},
@@ -153,18 +153,18 @@
 		},
 		{
 			"key": "departmentName",
-			"value": "",
+			"value": "Gestão de Retenção de Talentos",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "IdDepartment",
-			"value": "",
+			"value": "65b26f5fcd0b16d9d85d50fc",
 			"type": "any",
 			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-02-01T19:12:35.579Z",
+	"_postman_exported_at": "2024-02-02T14:29:57.795Z",
 	"_postman_exported_using": "Postman/10.22.9"
 }

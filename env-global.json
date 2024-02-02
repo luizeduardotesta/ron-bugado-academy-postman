@@ -15,8 +15,8 @@
 		},
 		{
 			"key": "Token",
-			"value": "",
-			"type": "any",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTMzMGI1NGRhOTg2MTk5NWQ0ZWIzMDIiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQxYXhmcG5ZWnBDM2hwdk9SeU5tVXdPQUVQR1RoLlMva1R6R21OVmhaSUZpSjM2NjUvUE5uTyIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoic2V4dGEtZmVpcmEsIDIwLzEwLzIwMjMsIDIwOjIwOjUyIEJSVCIsInJlZ2lzdHJhdGlvbk51bWJlciI6IjAxIiwiY29tcGFueUlkIjoiUWEuQ29kZXJzIiwiX2lkIjoiNjUzMzBiNTRkYTk4NjE5OTVkNGViMzAzIn1dLCJfX3YiOjAsImlhdCI6MTcwNjgxMDY1OCwiZXhwIjoxNzA2ODk3MDU4fQ.OSJpCAj137dlhP6-w3skKrIUdAkqrcLBuFBC39dgaUU",
+			"type": "secret",
 			"enabled": true
 		},
 		{
@@ -399,37 +399,37 @@
 		},
 		{
 			"key": "MsgChangedStatus",
-			"value": "",
+			"value": "Status do usuario atualizado com sucesso para status true.",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "MsgUserUpdated",
-			"value": "",
+			"value": "Dados atualizados com sucesso!",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "MsgDeleteUserId",
-			"value": "",
+			"value": "Usuário deletado com sucesso!.",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "MSGMaxCharactersAdress",
-			"value": "",
+			"value": "O campo País permite até 50 caracteres.",
 			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "MSGMalformedID",
-			"value": "",
+			"value": "CastError: Cast to ObjectId failed for value \"9999999999999999999999\" (type string) at path \"_id\" for model \"Company\"",
 			"type": "any",
 			"enabled": true
 		}
 	],
 	"name": "Globals",
 	"_postman_variable_scope": "globals",
-	"_postman_exported_at": "2024-02-01T19:16:51.828Z",
+	"_postman_exported_at": "2024-02-02T14:29:50.366Z",
 	"_postman_exported_using": "Postman/10.22.9"
 }
