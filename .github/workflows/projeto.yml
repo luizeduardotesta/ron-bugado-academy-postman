@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 #!/usr/bin/bash env bash
-name: Signup
+name: Config
 
 # Controls when the workflow will run
 on:
@@ -36,7 +36,12 @@ jobs:
         
         # Runs a set of commands using the runners shell
       - name: Step 3 Execute collection
+        run: newman run ./config.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
+        run: newman run ./users.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
         run: newman run ./company.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
+        run: newman run ./board.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
+        run: newman run ./costCenter.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
+        run: newman run ./department.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
      
         # Runs a set of commands using the runners shell
       - name: Step 4 Archive production artifacts
