@@ -37,12 +37,12 @@ jobs:
         # Runs a set of commands using the runners shell
       - name: Step 3 Execute collection
         run: |
-          newman run ./config.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
-          newman run ./users.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
-          newman run ./company.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
-          newman run ./board.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
-          newman run ./costCenter.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
-          newman run ./department.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
+          newman run ./config.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_config.html &&
+          newman run ./users.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_users.html &&
+          newman run ./company.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_company.html &&
+          newman run ./board.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_board.html &&
+          newman run ./costCenter.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_costCenter.html &&
+          newman run ./department.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_department.html
           
         # Runs a set of commands using the runners shell
       - name: Step 4 Archive production artifacts
