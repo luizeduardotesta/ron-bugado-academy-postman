@@ -36,16 +36,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Step 3 Execute collection
-        run: |
-          echo "Executando coleção 'config.json' com Newman..."
-          newman run ./config.json -g ./env-global.json -e ./env-ron-bugado.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_config.html &&
-          echo "Coleção 'config.json' executada com sucesso."
-
-          echo "Executando coleção 'users.json' com Newman..."
-          newman run ./users.json -g ./env-global.json -e ./env-ron-bugado.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_users.html &&
-          echo "Coleção 'users.json' executada com sucesso."
-
-          # Adicione mensagens de depuração para outras execuções de coleções, se necessário
+        run: newman run ./board.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_board.html
 
       # Runs a set of commands using the runners shell
       - name: Step 4 Archive production artifacts
