@@ -36,7 +36,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Step 3 Execute collection
-        run: newman run ./board.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_board.html
+        run: newman run ./config.json -g ./env-global.json -e ./env-ron-bugado.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report_board.html
 
       # Runs a set of commands using the runners shell
       - name: Step 4 Archive production artifacts
